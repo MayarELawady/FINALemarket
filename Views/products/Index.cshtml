@@ -1,0 +1,172 @@
+﻿@model EmarketTask.ViewModels.ProductCart
+@*@model emarket.ViewModels.ProductCart*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>HomePage</h2>
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<p>
+    <div class="pull-right">
+        <a href="@Url.Action("Create", "products")" class="btn btn-primary" target="_blank">
+            <span class="glyphicon glyphicon-plus"></span>
+            New Product
+        </a>
+        @*<button id="btnShowModal" type="button"
+                class="btn btn-primary ">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+            Go to cart List
+        </button>*@
+
+    </div>
+</p>
+
+
+<p>
+    @using (@Html.BeginForm())
+    {
+        <input type="submit" value="Filter" class="btn btn-primary" /> @Html.TextBox("search")
+    }
+</p>
+<div class="row">
+    @foreach (var item in Model.myproducts)
+    {
+
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <img src="@Url.Content(item.Image)" alt="..." style="width:auto ; height: 195px;" class="img-fluid">
+                <div class="caption">
+                    <h3>@item.Name</h3>
+                    <p>@item.Description</p>
+                    <div class="overlay d-flex align-items-center justify-content-center">
+                        <p><a href="@Url.Action("Details", "products", new { id = item.Id })" class="btn btn-primary" role="button">More Info</a> </p>
+                        
+                        @*////////////////////////////// CALL ADD TOCART ACTION HEEREEEEEE//////////////////////////////////////////*@
+
+                        <a href="@Url.Action("Addtocart","Cart", new { id = item.Id })" class="btn btn-primary" target="_blank">
+                            Add To Cart
+                        </a>
+                    </div>
+                    </div>
+                </div>
+        </div>
+
+    }
+</div>
+<!-- modal placeholder-->
+
+<div>
+    <fieldset>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+
+
+                    <div class="modal fade" tabindex="-1" id="loginModal"
+                         data-keyboard="false" data-backdrop="static">
+
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    @*////HEADER////*@
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        ×  @*to close the modal*@
+                                    </button>
+                                    <h4 class="modal-title">Cart List</h4>
+                                </div>
+                                <div class="modal-body">
+                                    @*//// Body of the Modal *@
+                                    <table class="table">
+                                        @*///////DATETIMEFUNCTION///////////*@
+                                        <tr>
+                                            <th>
+
+                                            </th>
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Price
+                                            </th>
+                                            <th>
+                                                Added_at
+                                            </th>
+
+                                        </tr>
+                                        <tbody>
+                                            @foreach (var item in Model.cart)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @*////////////////////////////////Call DELETEEEE ACTION HEREEEEEEEE//////////////////////////////////*@
+                                                        <a href="@Url.Action("Remove", "Cart",  new { id = item.product_id })" class="btn btn-primary" target="_blank">
+                                                            <span class="glyphicon glyphicon-remove 	"></span>
+
+                                                            Remove
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.product.Name)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.product.Price)
+                                                    </td>
+                                                    <td>
+
+                                                        @{ var dateC = item.added_at.Value;
+
+
+
+                                                            var mint = (DateTime.Now - dateC).Minutes;
+                                                            var hours = (DateTime.Now - dateC).Hours;
+                                                            var days = (DateTime.Now - dateC).Days;
+
+
+                                                        }
+                                                        <p>Added  @days Days, @hours Hours, @mint Minutes ago </p>
+                                                    </td>
+
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    @*/////FOOTER PART////*@
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+</script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+@*//////////////added one javascript and added button id such as btnShowModal
+    and btnHideModal to show and hide modal./////////////*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnShowModal").click(function () {
+            $("#loginModal").modal('show');
+        });
+
+        $("#btnHideModal").click(function () {
+            $("#loginModal").modal('hide');
+        });
+    });
+</script>
+
